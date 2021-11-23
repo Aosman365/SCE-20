@@ -1,0 +1,68 @@
+import pygame
+
+pygame.init()
+
+black = (0,0,0)
+white = (255,255,255)
+red = (255, 0, 0)
+blue = (0, 0, 255)
+clock = pygame.time.Clock()
+screen_width, screen_height = 1000,800
+screen = pygame.display.set_mode((screen_width, screen_height))
+
+
+x_speed = 0
+y_speed = 0
+x_pos = 500
+y_pos = 400
+
+def player():
+    global y_pos
+    global x_pos
+    global y_speed
+    global x_speed
+    player = pygame.draw.rect(screen, red, [x_pos, y_pos, 30, 30])
+
+    if player.colliderect(wall_1):
+        x_speed *= -1
+        y_speed *= -1
+
+def wall():
+    pygame.draw.rect(screen, blue, wall_1)
+
+wall_1 = pygame.Rect(0, 600, 1000, 50)
+
+while True:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_a:
+                x_speed = -10
+
+            if event.key == pygame.K_d:
+                x_speed = 10
+
+            if event.key == pygame.K_w:
+                y_speed = -10
+
+            if event.key == pygame.K_s:
+                y_speed = 10
+
+
+    x_speed *= 0.9
+    y_speed *= 0.9
+
+    x_pos += x_speed
+    y_pos += y_speed
+
+    screen.fill((white))
+
+    player()
+    wall()
+
+    pygame.display.flip()
+    clock.tick(60)
+
+pygame.quit()
